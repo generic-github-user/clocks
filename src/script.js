@@ -1,3 +1,11 @@
+circleNum = 200;
+order = 2;
+attraction = 2;
+nStrength = 0.01;
+mass = 0.1
+radius = 3
+color = 'hsla(50, 100%, 50%, 1)'
+
 Physics(function(world){
 
   var viewWidth = 300;
@@ -43,19 +51,19 @@ Physics(function(world){
   // create some bodies
     var circles = [];
 
-    for ( var i = 0, l = 180; i < l; ++i ){
+    for ( var i = 0, l = circleNum; i < l; ++i ){
 
         circles.push(
             Physics.body('circle', {
                 x: Math.random()*(300 - 10) + 10
                 ,y: Math.random()*(300 - 10) + 10
-                ,mass: 1
-                ,radius: 4
+                ,mass: mass
+                ,radius: radius
                 ,vx: Math.random()*0.01 - 0.005
                 ,vy: Math.random()*0.01 - 0.005
                 ,restitution: 0.99
                 ,styles: {
-                    fillStyle: '#F00'
+                    fillStyle: color
                 }
             })
         );
@@ -66,8 +74,8 @@ Physics(function(world){
 
     // add some fun interaction
     var attractor = Physics.behavior('attractor', {
-        order: 0,
-        strength: .0001
+        order: order,
+        strength: attraction
     });
     world.on({
         'interact:poke': function( pos ){
@@ -86,7 +94,7 @@ Physics(function(world){
 
     // add things to the world
     world.add([
-        Physics.behavior('newtonian', { strength: .001 })
+        Physics.behavior('newtonian', { strength: nStrength })
         ,Physics.behavior('sweep-prune')
         ,Physics.behavior('body-collision-detection', { checkAll: false })
         ,Physics.behavior('body-impulse-response')
@@ -96,7 +104,6 @@ Physics(function(world){
   
   // subscribe to ticker to advance the simulation
   Physics.util.ticker.on(function( time, dt ){
-
       world.step( time );
   });
 
