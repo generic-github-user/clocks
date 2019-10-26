@@ -6,6 +6,15 @@ mass = 0.1
 radius = 3
 color = 'hsla(50, 100%, 50%, 1)'
 
+//$('.js-tilt').tilt({
+    //glare: true,
+    //maxGlare: .5,
+    //scale: 1.1,
+	//maxTilt: 1,
+	//perspective: 10000,
+	//reset: false
+//})
+
 Physics(function(world){
 
   var viewWidth = 300;
