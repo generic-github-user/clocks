@@ -82,6 +82,18 @@ Physics(function(world){
 
     // add things to world
     world.add(circles);
+	
+	world.add(
+		Physics.body('circle', {
+			x: 300/2,
+			y: 300/2,
+			treatment: 'static',
+			radius: 10,
+			styles: {
+				fillStyle: 'white'
+			}
+		})
+	);
 
     // add some fun interaction
     var attractor = Physics.behavior('attractor', {
