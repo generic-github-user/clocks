@@ -36,23 +36,64 @@ Physics(function(world){
       cof: 0.99
   }));
 
-  // add a circle
-  world.add(
-      Physics.body('circle', {
-        x: 50, // x-coordinate
-        y: 30, // y-coordinate
-        vx: 0.2, // velocity in x-direction
-        vy: 0.01, // velocity in y-direction
-        radius: 20
-      })
-  );
-
   // ensure objects bounce when edge collision is detected
   world.add( Physics.behavior('body-impulse-response') );
 
-  // add some gravity
-  world.add( Physics.behavior('constant-acceleration') );
+  
+  // create some bodies
+    var circles = [];
 
+    for ( var i = 0, l = 180; i < l; ++i ){
+
+        circles.push(
+            Physics.body('circle', {
+                x: Math.random()*(300 - 10) + 10
+                ,y: Math.random()*(300 - 10) + 10
+                ,mass: 1
+                ,radius: 4
+                ,vx: Math.random()*0.01 - 0.005
+                ,vy: Math.random()*0.01 - 0.005
+                ,restitution: 0.99
+                ,styles: {
+                    fillStyle: '#F00'
+                }
+            })
+        );
+    }
+
+    // add things to world
+    world.add(circles);
+
+    // add some fun interaction
+    var attractor = Physics.behavior('attractor', {
+        order: 0,
+        strength: .0001
+    });
+    world.on({
+        'interact:poke': function( pos ){
+            world.wakeUpAll();
+            attractor.position( pos );
+            world.add( attractor );
+        }
+        ,'interact:move': function( pos ){
+            attractor.position( pos );
+        }
+        ,'interact:release': function(){
+            world.wakeUpAll();
+            world.remove( attractor );
+        }
+    });
+
+    // add things to the world
+    world.add([
+        Physics.behavior('newtonian', { strength: .001 })
+        ,Physics.behavior('sweep-prune')
+        ,Physics.behavior('body-collision-detection', { checkAll: false })
+        ,Physics.behavior('body-impulse-response')
+        //,edgeBounce
+    ]);
+  
+  
   // subscribe to ticker to advance the simulation
   Physics.util.ticker.on(function( time, dt ){
 
