@@ -55,13 +55,11 @@ Physics(function(world){
 
   // ensure objects bounce when edge collision is detected
   world.add( Physics.behavior('body-impulse-response') );
-
   
   // create some bodies
     var circles = [];
 
     for ( var i = 0, l = circleNum; i < l; ++i ){
-
         circles.push(
             Physics.body('circle', {
                 x: Math.random()*(300 - 10) + 10
@@ -109,6 +107,10 @@ Physics(function(world){
         ,Physics.behavior('body-impulse-response')
         //,edgeBounce
     ]);
+	
+	world.options({
+		sleepDisabled: true
+	});
   
   
   // subscribe to ticker to advance the simulation
