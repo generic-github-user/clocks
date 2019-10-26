@@ -4,7 +4,7 @@ attraction = 2;
 nStrength = 0.01;
 mass = 0.1
 radius = 3
-color = 'hsla(50, 100%, 50%, 1)'
+color = 'hsla('+rand(0, 360)+', 100%, 50%, 1)'
 
 //$('.js-tilt').tilt({
     //glare: true,
@@ -14,6 +14,10 @@ color = 'hsla(50, 100%, 50%, 1)'
 	//perspective: 10000,
 	//reset: false
 //})
+
+function rand(min, max) {
+    return Math.random() * (max - min) + min;
+}
 
 Physics(function(world){
 
