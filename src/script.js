@@ -1,7 +1,7 @@
 circleNum = 200;
 order = 2;
 attraction = 2;
-nStrength = 0.01;
+nStrength = 0.001;
 mass = 0.1
 radius = 3
 color = 'hsla('+rand(0, 360)+', 100%, 50%, 1)'
@@ -87,6 +87,7 @@ Physics(function(world){
 		Physics.body('circle', {
 			x: 300/2,
 			y: 300/2,
+			mass: 0.001,
 			treatment: 'static',
 			radius: 10,
 			styles: {
