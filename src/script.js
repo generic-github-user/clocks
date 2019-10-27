@@ -100,7 +100,7 @@ Physics(function(world){
 			y: 300/2,
 			offset: Physics.vector(0, 50),
 			mass: 0.001,
-			treatment: 'static',
+			treatment: 'kinematic',
 			width: 2,
 			height: 100,
 			styles: {
@@ -174,6 +174,8 @@ Physics(function(world){
   // subscribe to ticker to advance the simulation
   Physics.util.ticker.on(function( time, dt ){
       world.step( time );
+	  //secondHand.state.angular.set({'pos': 50});
+	  //secondHand.state.pos.set(1, -1);
   });
   
 	function updateHands() {
