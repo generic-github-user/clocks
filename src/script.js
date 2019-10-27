@@ -1,6 +1,6 @@
 // Settings
 circleNum = 200;
-order = 2;
+order = 0;
 attraction = 2;
 nStrength = 0.001;
 mass = 0.1
@@ -8,6 +8,9 @@ radius = 3
 color = randColor();
 viewWidth = 300;
 viewHeight = 300;
+initVelocity = 0.1;
+iv = initVelocity;
+restitution = 0.99;
 
 $('.js-tilt').tilt({
     glare: true,
@@ -59,7 +62,7 @@ Physics(function(world){
   // constrain objects to these bounds
   world.add(Physics.behavior('edge-collision-detection', {
       aabb: viewportBounds,
-      restitution: 0.99,
+      restitution: restitution,
       cof: 0.99
   }));
 
@@ -72,14 +75,14 @@ Physics(function(world){
     for ( var i = 0, l = circleNum; i < l; ++i ){
         circles.push(
             Physics.body('circle', {
-                x: Math.random()*(300 - 10) + 10
-                ,y: Math.random()*(300 - 10) + 10
-                ,mass: mass
-                ,radius: radius
-                ,vx: Math.random()*0.01 - 0.005
-                ,vy: Math.random()*0.01 - 0.005
-                ,restitution: 0.99
-                ,styles: {
+                x: rand(0, viewWidth),
+                y: rand(0, viewHeight),
+                mass: mass,
+                radius: radius,
+                vx: rand(-iv, iv),
+                vy: rand(-iv, iv),
+                restitution: restitution,
+                styles: {
                     fillStyle: color
                 }
             })
@@ -90,8 +93,8 @@ Physics(function(world){
     world.add(circles);
 	
 	dot = Physics.body('circle', {
-			x: 300/2,
-			y: 300/2,
+			x: viewWidth/2,
+			y: viewHeight/2,
 			mass: 0.001,
 			treatment: 'static',
 			radius: 5,
@@ -112,8 +115,8 @@ Physics(function(world){
 		handName = handInfo.name[i] + 'Hand';
 		// hand
 		window[handName] = Physics.body('rectangle', {
-			x: 300/2,
-			y: 300/2,
+			x: viewWidth/2,
+			y: viewHeight/2,
 			offset: Physics.vector(0, handInfo.length[i] / 2),
 			mass: 0.001,
 			treatment: 'static',
