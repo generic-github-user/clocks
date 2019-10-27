@@ -94,6 +94,20 @@ Physics(function(world){
 			}
 		})
 	);
+	
+	secondHand = Physics.body('rectangle', {
+			x: 300/2,
+			y: 300/2,
+			offset: Physics.vector(0, 50),
+			mass: 0.001,
+			treatment: 'static',
+			width: 2,
+			height: 100,
+			styles: {
+				fillStyle: 'white'
+			}
+		});
+	world.add(secondHand);
 
     // add some fun interaction
     var attractor = Physics.behavior('attractor', {
