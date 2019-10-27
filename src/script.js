@@ -9,14 +9,14 @@ color = 'hsla('+rand(0, 360)+', 100%, 50%, 1)'
 viewWidth = 300;
 viewHeight = 300;
 
-//$('.js-tilt').tilt({
-    //glare: true,
-    //maxGlare: .5,
-    //scale: 1.1,
-	//maxTilt: 1,
-	//perspective: 10000,
-	//reset: false
-//})
+$('.js-tilt').tilt({
+    glare: true,
+    maxGlare: .1,
+    scale: 1.1,
+	maxTilt: 20,
+	perspective: 500,
+	reset: true
+})
 
 // Pick a random number between a minimum and maximum
 function rand(min, max) {
