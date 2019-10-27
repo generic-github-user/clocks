@@ -24,20 +24,20 @@ function rand(min, max) {
 }
 
 var renderer = Physics.renderer('canvas', {
-		el: 'viewport',
-		width: viewWidth,
-		height: viewHeight,
-		meta: false, // don't display meta data
-		styles: {
-			// set colors for the circle bodies
-			'circle' : {
-				strokeStyle: '#351024',
-				lineWidth: 1,
-				fillStyle: '#d33682',
-				angleIndicator: '#351024'
-			}
+	el: 'viewport',
+	width: viewWidth,
+	height: viewHeight,
+	meta: false, // don't display meta data
+	styles: {
+		// set colors for the circle bodies
+		'circle' : {
+			strokeStyle: '#351024',
+			lineWidth: 1,
+			fillStyle: '#d33682',
+			angleIndicator: '#351024'
 		}
-	});
+	}
+});
 
 Physics(function(world){
 	// #
@@ -140,13 +140,16 @@ Physics(function(world){
 		});
 	world.add(hourHand);
 
-	
+	// Add clock hands to hand layer
 	handsLayer.addToStack([
 		secondHand,
 		minuteHand,
 		hourHand
 	]);
+	// Add center dot to its own layer
 	dotLayer.addToStack([dot]);
+	
+	// Only display particles on main rendering layer
 	//renderer._layers.main.bodies = circles;
 	//renderer._layers.main.removeFromStack([]);
 	renderer._layers.main.addToStack(circles)
@@ -194,7 +197,18 @@ Physics(function(world){
   
 	// Update positions of hands to match current time
 	function updateHands() {
+		// Get current time and date
 		d = new Date();
+		
+		// Breakdown:
+		// Current seconds: d.getSeconds()
+		// Part of a second (for smooth motion): d.getMilliseconds()/1000
+		// Composite second value: (d.getSeconds() + d.getMilliseconds()/1000) / 60)
+		// Fraction of one minute : ((d.getSeconds() + d.getMilliseconds()/1000) / 60)
+		// Value translated to rotation in radians: ((d.getSeconds() + d.getMilliseconds()/1000) / 60) * (2*Math.PI)
+		// Radian value offset to display correctly: (d.getSeconds() + d.getMilliseconds()/1000) / 60) * (2*Math.PI) + Math.PI
+		// This is extended to minutes and hours below
+		
 		secondHand.state.angular.pos = ((d.getSeconds() + d.getMilliseconds()/1000) / 60) * (2*Math.PI) + Math.PI;
 		minuteHand.state.angular.pos = ((d.getMinutes() + d.getSeconds()/60) / 60) * (2*Math.PI) + Math.PI;
 		hourHand.state.angular.pos = ((d.getHours() + d.getMinutes()/60) / 12) * (2*Math.PI) + Math.PI;
