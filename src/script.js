@@ -122,6 +122,20 @@ Physics(function(world){
 			}
 		});
 	world.add(minuteHand);
+	
+	hourHand = Physics.body('rectangle', {
+			x: 300/2,
+			y: 300/2,
+			offset: Physics.vector(0, 75/2),
+			mass: 0.001,
+			treatment: 'static',
+			width: 8,
+			height: 75,
+			styles: {
+				fillStyle: 'white'
+			}
+		});
+	world.add(hourHand);
 
     // add some fun interaction
     var attractor = Physics.behavior('attractor', {
