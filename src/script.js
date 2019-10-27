@@ -1,3 +1,4 @@
+// Settings
 circleNum = 200;
 order = 2;
 attraction = 2;
@@ -5,6 +6,8 @@ nStrength = 0.001;
 mass = 0.1
 radius = 3
 color = 'hsla('+rand(0, 360)+', 100%, 50%, 1)'
+viewWidth = 300;
+viewHeight = 300;
 
 //$('.js-tilt').tilt({
     //glare: true,
@@ -15,37 +18,31 @@ color = 'hsla('+rand(0, 360)+', 100%, 50%, 1)'
 	//reset: false
 //})
 
+// Pick a random number between a minimum and maximum
 function rand(min, max) {
     return Math.random() * (max - min) + min;
 }
 
 Physics(function(world){
-
-  var viewWidth = 300;
-  var viewHeight = 300;
-
-  var renderer = Physics.renderer('canvas', {
-    el: 'viewport',
-    width: viewWidth,
-    height: viewHeight,
-    meta: false, // don't display meta data
-    styles: {
-        // set colors for the circle bodies
-        'circle' : {
-            strokeStyle: '#351024',
-            lineWidth: 1,
-            fillStyle: '#d33682',
-            angleIndicator: '#351024'
-        }
-    }
-  });
-
-  // add the renderer
-  world.add( renderer );
-  // render on each step
-  world.on('step', function(){
-    world.render();
-  });
+	var renderer = Physics.renderer('canvas', {
+		el: 'viewport',
+		width: viewWidth,
+		height: viewHeight,
+		meta: false, // don't display meta data
+		styles: {
+			// set colors for the circle bodies
+			'circle' : {
+				strokeStyle: '#351024',
+				lineWidth: 1,
+				fillStyle: '#d33682',
+				angleIndicator: '#351024'
+			}
+		}
+	});
+	world.add(renderer);
+	world.on('step', function(){
+		world.render();
+	});
 
   // bounds of the window
   var viewportBounds = Physics.aabb(0, 0, 300, 300);
@@ -106,7 +103,8 @@ Physics(function(world){
 			height: 100,
 			styles: {
 				fillStyle: 'white'
-			}
+			},
+			//view: document.querySelector('#hands')
 		});
 	world.add(secondHand);
 	
@@ -167,10 +165,10 @@ Physics(function(world){
         //,edgeBounce
     ]);
 	
+	// Don't let any physics bodies sleep
 	world.options({
 		sleepDisabled: true
 	});
-  
   
   // subscribe to ticker to advance the simulation
   Physics.util.ticker.on(function( time, dt ){
@@ -179,23 +177,24 @@ Physics(function(world){
 	  //secondHand.state.pos.set(1, -1);
   });
   
+	// Update positions of hands to match current time
 	function updateHands() {
 		d = new Date();
 		secondHand.state.angular.pos = ((d.getSeconds() + d.getMilliseconds()/1000) / 60) * (2*Math.PI) + Math.PI;
 		minuteHand.state.angular.pos = ((d.getMinutes() + d.getSeconds()/60) / 60) * (2*Math.PI) + Math.PI;
 		hourHand.state.angular.pos = ((d.getHours() + d.getMinutes()/60) / 12) * (2*Math.PI) + Math.PI;
 	}
-  world.on('step', () => {
-	  //((d.getSeconds() + d.getMilliseconds()/1000) / 60)
-	  
-	  secondHand.state.angular.vel = 0.000001;
-	  updateHands();
-	  
-	  //secondHand.state.angular.pos = d / 1000 / 6
-	  //secondHand.state.angular.pos
-  })
+	// Update physics
+	world.on('step', () => {
+		//((d.getSeconds() + d.getMilliseconds()/1000) / 60)
 
-  // start the ticker
-  Physics.util.ticker.start();
+		secondHand.state.angular.vel = 0.000001;
+		updateHands();
 
+		//secondHand.state.angular.pos = d / 1000 / 6
+		//secondHand.state.angular.pos
+	})
+
+	// start the ticker
+	Physics.util.ticker.start();
 });
