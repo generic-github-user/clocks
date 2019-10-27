@@ -23,8 +23,7 @@ function rand(min, max) {
     return Math.random() * (max - min) + min;
 }
 
-Physics(function(world){
-	var renderer = Physics.renderer('canvas', {
+var renderer = Physics.renderer('canvas', {
 		el: 'viewport',
 		width: viewWidth,
 		height: viewHeight,
@@ -39,6 +38,12 @@ Physics(function(world){
 			}
 		}
 	});
+
+Physics(function(world){
+	// #
+	handsLayer = renderer.addLayer('hands');
+	dotLayer = renderer.addLayer('dot');
+	
 	world.add(renderer);
 	world.on('step', function(){
 		world.render();
@@ -80,18 +85,17 @@ Physics(function(world){
     // add things to world
     world.add(circles);
 	
-	world.add(
-		Physics.body('circle', {
+	dot = Physics.body('circle', {
 			x: 300/2,
 			y: 300/2,
 			mass: 0.001,
 			treatment: 'static',
-			radius: 10,
+			radius: 5,
 			styles: {
 				fillStyle: 'white'
 			}
 		})
-	);
+	world.add(dot);
 	
 	secondHand = Physics.body('rectangle', {
 			x: 300/2,
@@ -102,7 +106,7 @@ Physics(function(world){
 			width: 2,
 			height: 100,
 			styles: {
-				fillStyle: 'white'
+				fillStyle: '#DDD'
 			},
 			//view: document.querySelector('#hands')
 		});
@@ -117,7 +121,7 @@ Physics(function(world){
 			width: 5,
 			height: 100,
 			styles: {
-				fillStyle: 'white'
+				fillStyle: '#DDD'
 			}
 		});
 	world.add(minuteHand);
@@ -131,11 +135,22 @@ Physics(function(world){
 			width: 8,
 			height: 75,
 			styles: {
-				fillStyle: 'white'
+				fillStyle: '#DDD'
 			}
 		});
 	world.add(hourHand);
 
+	
+	handsLayer.addToStack([
+		secondHand,
+		minuteHand,
+		hourHand
+	]);
+	dotLayer.addToStack([dot]);
+	//renderer._layers.main.bodies = circles;
+	//renderer._layers.main.removeFromStack([]);
+	renderer._layers.main.addToStack(circles)
+	
     // add some fun interaction
     var attractor = Physics.behavior('attractor', {
         order: order,

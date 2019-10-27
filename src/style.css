@@ -33,3 +33,10 @@ html, body {
 	
 	transform: translateZ(20px);
 }
+
+.pjs-layer-hands {
+	transform: translateZ(40px);
+}
+.pjs-layer-dot {
+	transform: translateZ(60px);
+}
