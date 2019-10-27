@@ -101,48 +101,31 @@ Physics(function(world){
 		})
 	world.add(dot);
 	
-	secondHand = Physics.body('rectangle', {
-			x: 300/2,
-			y: 300/2,
-			offset: Physics.vector(0, 50),
-			mass: 0.001,
-			treatment: 'kinematic',
-			width: 2,
-			height: 100,
-			styles: {
-				fillStyle: '#DDD'
-			},
-			//view: document.querySelector('#hands')
-		});
-	world.add(secondHand);
+	var handInfo = {
+		'name': ['second', 'minute', 'hour'],
+		'width': [3, 5, 8],
+		'length': [100, 100, 75],
+		//'offset': [50, 50, 75/2]
+	}
 	
-	minuteHand = Physics.body('rectangle', {
+	for (var i = 0; i < 3; i ++) {
+		handName = handInfo.name[i] + 'Hand';
+		// hand
+		window[handName] = Physics.body('rectangle', {
 			x: 300/2,
 			y: 300/2,
-			offset: Physics.vector(0, 50),
+			offset: Physics.vector(0, handInfo.length[i] / 2),
 			mass: 0.001,
 			treatment: 'static',
-			width: 5,
-			height: 100,
+			width: handInfo.width[i],
+			height: handInfo.length[i],
 			styles: {
 				fillStyle: '#DDD'
 			}
 		});
-	world.add(minuteHand);
-	
-	hourHand = Physics.body('rectangle', {
-			x: 300/2,
-			y: 300/2,
-			offset: Physics.vector(0, 75/2),
-			mass: 0.001,
-			treatment: 'static',
-			width: 8,
-			height: 75,
-			styles: {
-				fillStyle: '#DDD'
-			}
-		});
-	world.add(hourHand);
+		
+		world.add(window[handName]);
+	}
 
 	// Add clock hands to hand layer
 	handsLayer.addToStack([
