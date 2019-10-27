@@ -5,7 +5,7 @@ attraction = 2;
 nStrength = 0.001;
 mass = 0.1
 radius = 3
-color = 'hsla('+rand(0, 360)+', 100%, 50%, 1)'
+color = randColor();
 viewWidth = 300;
 viewHeight = 300;
 
@@ -21,6 +21,10 @@ $('.js-tilt').tilt({
 // Pick a random number between a minimum and maximum
 function rand(min, max) {
     return Math.random() * (max - min) + min;
+}
+
+function randColor() {
+	return 'hsla('+rand(0, 360)+', 100%, 50%, 1)';
 }
 
 var renderer = Physics.renderer('canvas', {
@@ -62,8 +66,8 @@ Physics(function(world){
   // ensure objects bounce when edge collision is detected
   world.add( Physics.behavior('body-impulse-response') );
   
-  // create some bodies
-    var circles = [];
+	// create some bodies
+	circles = [];
 
     for ( var i = 0, l = circleNum; i < l; ++i ){
         circles.push(
@@ -222,8 +226,45 @@ Physics(function(world){
 
 		//secondHand.state.angular.pos = d / 1000 / 6
 		//secondHand.state.angular.pos
+		
+		//if (new Date().getSeconds() == 15) {
+			
+		//}
 	})
 
 	// start the ticker
 	Physics.util.ticker.start();
 });
+
+function updateColors() {
+	color = randColor();
+	
+	circles.forEach((circle) => {
+		// See https://stackoverflow.com/a/48891494
+		circle.styles.fillStyle = color;
+		circle.view = null;
+	});
+}
+
+function m(s) {
+	return s * 1000;
+}
+
+// Without this logic, we would have to somehow call the function in the exact frame when the time changed to the next minute
+// See https://stackoverflow.com/a/4455310
+var now = new Date();
+var wait = new Date(
+	now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), 0, 0
+) - now;
+// do we need this?
+if (wait < 0) {
+     wait += m(60);
+}
+// See https://stackoverflow.com/questions/4455282/call-a-javascript-function-at-a-specific-time-of-day#comment4867489_4455310
+setTimeout(
+	() => {
+		updateColors(),
+		setInterval(updateColors, m(60))
+	},
+	wait
+);
