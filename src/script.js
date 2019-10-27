@@ -108,6 +108,20 @@ Physics(function(world){
 			}
 		});
 	world.add(secondHand);
+	
+	minuteHand = Physics.body('rectangle', {
+			x: 300/2,
+			y: 300/2,
+			offset: Physics.vector(0, 50),
+			mass: 0.001,
+			treatment: 'static',
+			width: 5,
+			height: 100,
+			styles: {
+				fillStyle: 'white'
+			}
+		});
+	world.add(minuteHand);
 
     // add some fun interaction
     var attractor = Physics.behavior('attractor', {
