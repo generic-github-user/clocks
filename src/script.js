@@ -176,14 +176,19 @@ Physics(function(world){
       world.step( time );
   });
   
+	function updateHands() {
+		d = new Date();
+		secondHand.state.angular.pos = ((d.getSeconds() + d.getMilliseconds()/1000) / 60) * (2*Math.PI) + Math.PI;
+		minuteHand.state.angular.pos = ((d.getMinutes() + d.getSeconds()/60) / 60) * (2*Math.PI) + Math.PI;
+		hourHand.state.angular.pos = ((d.getHours() + d.getMinutes()/60) / 12) * (2*Math.PI) + Math.PI;
+	}
   world.on('step', () => {
-	  d = new Date();
 	  //((d.getSeconds() + d.getMilliseconds()/1000) / 60)
-	  secondHand.state.angular.pos = ((d.getSeconds() + d.getMilliseconds()/1000) / 60) * (2*Math.PI) + Math.PI;
-	  minuteHand.state.angular.pos = ((d.getMinutes() + d.getSeconds()/60) / 60) * (2*Math.PI) + Math.PI;
-	  hourHand.state.angular.pos = ((d.getHours() + d.getMinutes()/60) / 12) * (2*Math.PI) + Math.PI;
-	  //secondHand.state.angular.pos = d / 1000 / 6
 	  
+	  secondHand.state.angular.vel = 0.000001;
+	  updateHands();
+	  
+	  //secondHand.state.angular.pos = d / 1000 / 6
 	  //secondHand.state.angular.pos
   })
 
