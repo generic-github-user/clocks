@@ -20,7 +20,8 @@ html, body {
 	height: 300px;
 	transform-style: preserve-3d;
 	margin: 30px;
-	padding: 30px;
+	
+	padding: 10px;
 	
 	background: #1d1f20;
 	border-radius: 30px;
